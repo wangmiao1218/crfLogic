@@ -185,9 +185,10 @@ public class CrfLogic {
 			futureTest.get();  
 			futureDevelop.get();
 		} catch (InterruptedException e) {  
-			e.printStackTrace();  
+			logger.error("线程失败"+e.getMessage());
 		} 
 		
+		logger.info("判断入库完成");
         //判断入库完成,天坑坑坑坑……，不知道为什么改成这个，明明之前都好使，啊啊啊啊啊啊啊
 		//if ("success".equals(futureTest) && "success".equals(futureDevelop)) {
 		if (futureTest.isDone() && futureDevelop.isDone()) {
@@ -551,13 +552,12 @@ public class CrfLogic {
 			Map<Integer,String> rowNumAndcrfdataMap = CrfdataOrPatientDetailMongodbDataProcess
 					.queryDatasOfCrfdataMongodb(mongodbIp,rowNumAndpatCrfdataMapMap);
 			//将crfdata结果写入excel
+			logger.info("将crfdata结果写入excel");
 			CrfLogic.writeCrfdataIntoExcel(excel, rowNumAndcrfdataMap);
 		} catch (Exception e) {
-			System.out.println("出错了");
-			e.printStackTrace();
+			logger.error("crfdata结果写入excel失败"+e.getMessage());
 		}
-		
-		System.out.println("ok");
+		logger.info("queryCrfdataByPatAndWriteResults完成");
 	}
 		
 
@@ -578,7 +578,7 @@ public class CrfLogic {
 			crfdata=entry.getValue();
 			ExcelUtils.writeAndSaveContent(excel, crfdata.toString(), rowNum, outputCellNum);
 		}
-		System.out.println("crfdata写入excel完成...");
+		logger.info("crfdata写入excel完成...");
 	}
 	
 	
@@ -603,7 +603,7 @@ public class CrfLogic {
 		}
 		String patStrs = sb.deleteCharAt(sb.length() - 1).toString();
 		String str = ManualEMRAutoCRFV2OfCrfAutoInterface.getResultsByPostMethod(httpUrl, disease, patStrs);
-		System.out.println("请求接口end...");
+		logger.info("请求接口end...");
 		return new JSONObject(str);
 	}
 	
@@ -625,7 +625,7 @@ public class CrfLogic {
 			pat=entry.getValue();
 			ExcelUtils.writeAndSaveContent(excel, pat, rowNum, patCellNum);
 		}
-		System.out.println("pat写入excel完成...");
+		logger.info("pat写入excel完成...");
 	}
 	
 	

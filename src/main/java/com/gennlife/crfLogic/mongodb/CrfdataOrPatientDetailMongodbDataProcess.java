@@ -73,7 +73,11 @@ public class CrfdataOrPatientDetailMongodbDataProcess {
 		            	returnStr=((JSONObject) jsonObject.get("data")).getJSONArray("visits").get(0).toString();
 		            	returnStr= JsonUtils.analysisCrfdataPathAndReturnNewValue(returnStr, crfdata);
 		            }
-		        } finally {
+		            //logger.info(returnStr);
+		        } catch(Exception e){
+		        	logger.error("组装错误"+e.getMessage());
+		        }
+		        finally {
 		            cursor.close();
 		        }
 		        rowNumAndQueryJsonMap.put(rowNum, returnStr);
@@ -118,8 +122,13 @@ public class CrfdataOrPatientDetailMongodbDataProcess {
 			documents.add(document);
 		}
 		//批量插入
-		mongoCollection.insertMany(documents);
-		System.out.println("插入测试库完成。"+"insert "+listMapJsons.size()+" successfully");
+		try {
+			mongoCollection.insertMany(documents);
+			logger.info("批量插入成功");
+		} catch (Exception e) {
+			logger.error("批量插入失败"+e.getMessage());
+		}
+		logger.info("插入测试库完成。"+"insert "+listMapJsons.size()+" successfully");
 	}
 	
 	
@@ -155,8 +164,13 @@ public class CrfdataOrPatientDetailMongodbDataProcess {
 			documents.add(document);
 		}
 		//批量插入
-		mongoCollection.insertMany(documents);
-		System.out.println("插入开发库完成。"+"insert "+listMapJsons.size()+" successfully");
+		try {
+			mongoCollection.insertMany(documents);
+			logger.info("批量插入成功");
+		} catch (Exception e) {
+			logger.error("批量插入失败"+e.getMessage());
+		}
+		logger.info("插入开发库完成。"+"insert "+listMapJsons.size()+" successfully");
 	}
 	
 	

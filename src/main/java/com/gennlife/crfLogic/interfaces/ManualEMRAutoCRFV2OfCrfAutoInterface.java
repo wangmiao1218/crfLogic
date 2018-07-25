@@ -55,6 +55,7 @@ public class ManualEMRAutoCRFV2OfCrfAutoInterface {
 	 */
 	public static String getResultsByPostMethod(String httpUrl,String disease,String patStrs) {
 		String params = "{\"crf_id\":\""+disease+"\",\"updateDetail\":\"FALSE\",\"list\":[" + patStrs+"]}";
+		logger.info("接口请求开始");
 		try {
 			// 创建连接
 			URL url = new URL(httpUrl);
@@ -94,8 +95,9 @@ public class ManualEMRAutoCRFV2OfCrfAutoInterface {
 				// System.out.println(result);
 				return result;
 			}
+			logger.info("接口请求结束");
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("接口请求失败"+e.getMessage());
 		}
 		// 自定义错误信息
 		return "error";
