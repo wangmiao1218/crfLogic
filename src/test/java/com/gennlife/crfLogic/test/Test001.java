@@ -9,5 +9,4 @@ public class Test001 {
 	public void test() throws JSONException{
 		System.out.println("ok");
 	}
-	
 }
